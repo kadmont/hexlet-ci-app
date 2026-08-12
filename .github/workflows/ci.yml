@@ -2,26 +2,29 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '26.x'
-      
-      - name: Install dependencies
-        run: make install
-      
-      - name: Run linter
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
         run: make lint
-      
-      - name: Run tests
+
+      - name: Test
         run: make test
