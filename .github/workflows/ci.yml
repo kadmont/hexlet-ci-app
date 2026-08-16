@@ -11,26 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Клонирование репозитория
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
       
-      - name: List files
-        run: ls -la
-      
-      - name: Check package.json
-        run: cat package.json
-      
+      # Установка Node.js
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '26.x'
+          cache: 'npm'
       
+      # Установка зависимостей с разрешением конфликтов
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
       
+      # Вывод приветствия от Hexlet
       - name: Print Hello from Hexlet
         uses: hexlet-components/hello-from-hexlet-action@release
       
+      # Запуск тестов
       - name: Run tests
         run: npm test
