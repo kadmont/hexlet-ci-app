@@ -3,6 +3,8 @@ name: CI
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,21 +14,23 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
-
+      
+      - name: List files
+        run: ls -la
+      
+      - name: Check package.json
+        run: cat package.json
+      
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '26.x'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: pnpm setup
       
-      - name: Run linter
-        run: pnpm lint
-
-      - name: Run tests
-        run: pnpm test
-
+      - name: Install dependencies
+        run: npm install
+      
       - name: Print Hello from Hexlet
         uses: hexlet-components/hello-from-hexlet-action@release
+      
+      - name: Run tests
+        run: npm test
