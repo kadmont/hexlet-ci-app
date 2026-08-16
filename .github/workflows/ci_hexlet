@@ -1,7 +1,5 @@
 name: Node CI
 
-# На каждое событие ровно один workflow: здесь нет release-please, поэтому
-# main проверяет Node CI.
 on:
   push:
     branches:
@@ -21,9 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # pnpm ставится до setup-node: тот с cache: pnpm ищет уже существующий
-      # бинарь, чтобы вычислить путь к store, и иначе падает с
-      # «Unable to locate executable file: pnpm».
       - uses: pnpm/action-setup@v6
 
       - name: Use Node.js ${{ matrix.node-version }}
@@ -34,7 +29,12 @@ jobs:
 
       - name: Install
         run: make install
+      
       - name: Run linter
         run: make lint
+      
+      - name: Print Hello from Hexlet
+        uses: hexlet-components/hello-from-hexlet-action@release
+      
       - name: Run tests
         run: make test
